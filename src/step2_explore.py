@@ -28,7 +28,7 @@ def load():
 
 
 def draw_raw(data):
-    """480주를 그대로 그린다. 이 그림의 역할은 '무엇이 안 보이는지' 보여주기다."""
+    """원자료를 그대로 그려 연도별 주간 패턴을 확인한다."""
     figure, axis = plt.subplots(figsize=(14, 5.4))
 
     # 연도별로 끊어 그린다. 겨울에는 채집을 하지 않으므로 12~3월을 선으로
@@ -97,9 +97,9 @@ def draw_coverage(grid):
         side.set_visible(False)
 
     empty = int((values == 0).sum())
-    axis.set(title="채집한 주가 해마다 다르다 — 칸 안 숫자는 그달에 채집한 주 수")
+    axis.set(title="연도마다 채집 기간이 다르다 — 칸 안 숫자는 관측한 주 수")
     axis.text(0, -0.085, f"통째로 빠진 달 {empty}개. "
-              "info()는 '결측 0'이라고 하지만, 아예 없는 행은 결측으로 세어지지 않는다.",
+              "공정한 연도 비교를 위해 2010~2023년의 5~10월만 분석한다.",
               transform=axis.transAxes, ha="left", fontsize=12.5, color="#6B7683")
     figure.tight_layout()
     save(figure, "02_coverage.png")
@@ -124,9 +124,8 @@ def main():
 
     draw_raw(data)
     draw_coverage(grid)
-    print("\n해마다 같은 모양의 봉우리가 반복되고, 봉우리 높이는 들쭉날쭉하다.")
-    print("정작 '16년 동안 늘었나 줄었나'는 이 그림으로 알 수 없다.")
-    print("계절에 따른 오르내림이 너무 커서 장기 변화를 덮기 때문이다.")
+    print("\n해마다 비슷한 계절 패턴이 반복되지만 봉우리 높이는 들쭉날쭉하다.")
+    print("02번 관측 현황을 근거로 이후 분석은 2010~2023년 5~10월로 통일한다.")
 
 
 if __name__ == "__main__":

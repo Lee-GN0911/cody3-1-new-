@@ -146,13 +146,9 @@ def load_weather_weekly():
         week_end=("date", "max"),
         weather_days=("date", "size"),
         avg_temp=("avg_temp", "mean"),        # 일평균기온의 주간 평균
-        peak_temp=("max_temp", "max"),        # 그 주의 일최고기온 중 최댓값
-        hot_days=("max_temp", lambda s: (s >= 33).sum()),  # 33℃ 이상인 날 수
         rain_per_day=("rainfall", "mean"),    # 하루 평균 강수량(mm/일)
         humidity=("humidity", "mean"),        # 일평균습도의 주간 평균
     )
-    # 5주차는 날 수가 적으므로 '하루당 폭염일 비율'로 바꿔 서로 비교 가능하게 만든다
-    weekly["hot_day_ratio"] = weekly["hot_days"] / weekly["weather_days"]
     return weekly
 
 
@@ -214,8 +210,7 @@ def main():
         raise ValueError("기상 자료가 붙지 않은 주가 있습니다.")
 
     merged.round({
-        "avg_temp": 2, "peak_temp": 2, "rain_per_day": 2,
-        "humidity": 2, "hot_day_ratio": 3,
+        "avg_temp": 2, "rain_per_day": 2, "humidity": 2,
     }).to_csv(WEEKLY_CSV, index=False, encoding="utf-8-sig")
 
     coverage = summarize_coverage(merged)

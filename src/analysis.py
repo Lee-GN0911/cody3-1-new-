@@ -7,14 +7,12 @@
 import numpy as np
 import pandas as pd
 
-from config import WEEKLY_CSV
+from config import ANALYSIS_FIRST_YEAR, ANALYSIS_MONTHS, WEEKLY_CSV
 
 MIN_YEARS = 5           # 평년값을 만들 때 필요한 최소 연도 수
-CLIMATE = ["avg_temp", "peak_temp", "hot_day_ratio", "rain_per_day", "humidity"]
+CLIMATE = ["avg_temp", "rain_per_day", "humidity"]
 LABELS = {
     "avg_temp": "평균기온",
-    "peak_temp": "주간 최고기온",
-    "hot_day_ratio": "폭염일 비율(33℃↑)",
     "rain_per_day": "강수량",
     "humidity": "습도",
 }
@@ -29,6 +27,10 @@ def load_with_anomaly():
       - 기후: 평년 대비 차이 (_dev).   0이면 평년 수준
     """
     data = pd.read_csv(WEEKLY_CSV, parse_dates=["week_start"])
+    data = data[
+        (data["year"] >= ANALYSIS_FIRST_YEAR)
+        & data["month"].isin(ANALYSIS_MONTHS)
+    ].copy()
     group = data.groupby(["month", "week_of_month"])
 
     data["n_years"] = group["culex"].transform("size")
