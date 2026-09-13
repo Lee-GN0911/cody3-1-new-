@@ -1,0 +1,14 @@
+# 파이썬
+__pycache__/
+*.pyc
+.venv/
+venv/
+
+# 편집기
+.vscode/
+.idea/
+.DS_Store
+
+# 원자료와 리포트 이미지는 저장소에 포함합니다(재현성).
+# 중간 산출물만 제외하려면 아래 주석을 해제하세요.
+# data/processed/
